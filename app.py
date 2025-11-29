@@ -740,7 +740,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Animated background particles
-st.markdown("""
+st.markdown(""" 
 <div class="particles">
     <!-- Particles will be added here with JavaScript -->
 </div>
@@ -783,6 +783,27 @@ if (particlesContainer) {
     `;
     document.head.appendChild(style);
 }
+</script>
+""", unsafe_allow_html=True)
+
+# Remove stray text nodes that are exactly "}" (fix visible stray character)
+st.markdown("""
+<script>
+(function removeStrayBrace(){
+  try {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    const toRemove = [];
+    while (node = walker.nextNode()) {
+      if (node.nodeValue && node.nodeValue.trim() === "}") {
+        toRemove.push(node);
+      }
+    }
+    toRemove.forEach(n => n.parentNode && n.parentNode.removeChild(n));
+  } catch (e) {
+    // no-op
+  }
+})();
 </script>
 """, unsafe_allow_html=True)
 
